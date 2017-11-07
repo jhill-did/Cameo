@@ -4,6 +4,7 @@ import javafx.scene.control.TabPane;
 import javafx.scene.control.TextArea;
 import javafx.scene.layout.*;
 import Cameo.Model.ApplicationModel;
+import Cameo.Model.Document;
 import javafx.beans.property.Property;
 import javafx.beans.value.*;
 import javafx.event.*;
@@ -42,27 +43,26 @@ public class DocumentArea extends StackPane
 				{
 					if (change.wasRemoved())
 					{
-						System.out.println(change.getRemoved().get(0).getText());
+						// System.out.println(change.getRemoved().get(0).getText());
 					}
 				}
 			}
 		});
 		
-		Tab documentTab1 = new Tab();
-		TextArea textArea1 = new TextArea();
-		textArea1.setText("Hello World");
-		
-		
-		documentTab1.setText("New Document");
-		documentTab1.setContent(textArea1);
-		
-		Tab documentTab2 = new Tab();
-		TextArea textArea2 = new TextArea();
-		documentTab2.setText("New Document (2)");
-		documentTab2.setContent(textArea2);
-		
-		tabPane.getTabs().add(documentTab1);
-		tabPane.getTabs().add(documentTab2);
+		model.documents.addListener(new ListChangeListener<Document>()
+		{
+			@Override
+			public void onChanged(Change<? extends Document> change)
+			{
+				while (change.next())
+				{
+					if (change.wasAdded())
+					{
+						tabPane.getTabs().add(new DocumentTab(change.getAddedSubList().get(0)));
+					}
+				}
+			}
+		});
 		
 		this.getChildren().add(tabPane);
 	}

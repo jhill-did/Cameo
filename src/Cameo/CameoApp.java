@@ -18,16 +18,19 @@ import javafx.collections.ListChangeListener;
 
 public class CameoApp extends Application
 {
+	
 	public static void main(String[] args)
 	{
 		CameoApp.launch(args);
 	}
 
+	public Stage mainStage;
 	ApplicationModel model = new ApplicationModel();
 	
 	@Override
 	public void start(Stage primaryStage) throws Exception
 	{		
+		mainStage = primaryStage;
 		model.documents.addListener(new ListChangeListener<Document>() {
 
 			@Override
@@ -38,7 +41,7 @@ public class CameoApp extends Application
 					if (change.wasRemoved())
 					{
 						Document removed = change.getRemoved().get(0);
-						System.out.println(removed.fileName);
+						System.out.println(removed.filename);
 					}
 				}
 			}
@@ -55,7 +58,7 @@ public class CameoApp extends Application
 		
 		scene.addEventHandler(KeyEvent.KEY_PRESSED, hotkeyHandler);
 
-		CameoMenuBar menuBar = new CameoMenuBar();
+		CameoMenuBar menuBar = new CameoMenuBar(this);
 		
 		root.setTop(menuBar);
 		
@@ -69,19 +72,10 @@ public class CameoApp extends Application
 		root.setBottom(statusLabel);
 				
 		primaryStage.show();
+		
+		// Test automatically open file.
+		openDocument(new File("E:/Users/Puddin/Documents/Projects/Tools/Cameo/src/Cameo/CameoApp.java"));
 	}
-	
-	final KeyCombination newFileHotkey = new KeyCodeCombination(KeyCode.N, KeyCombination.CONTROL_DOWN);
-	
-	EventHandler<KeyEvent> hotkeyHandler = new EventHandler<KeyEvent>() {
-        @Override
-        public void handle(KeyEvent event) {
-            if (newFileHotkey.match(event)) {
-                System.out.println("Ctrl+N pressed");
-                openDocument();
-            }
-        }
-    };
     
     void openDocument()
     {
@@ -95,7 +89,7 @@ public class CameoApp extends Application
 		{
 			// If no file was specified let's make a new document.
 			temp = new Document();
-			temp.fileName = "Untitled";
+			temp.filename = "Untitled";
 			temp.fullPath = null;
 			temp.content = "";
 		}
@@ -104,13 +98,15 @@ public class CameoApp extends Application
 			// Load file into document.
 			temp = loadDocument(file);
 		}
-		model.documents.add(temp);	
+		
+		model.documents.add(temp);
+		model.selectedDocument.set(model.documents.size() - 1);
 	}
 	
-	Document loadDocument(File file)
+	private Document loadDocument(File file)
 	{
 		Document output = new Document();
-		output.fileName = file.getName();
+		output.filename = file.getName();
 		output.fullPath = file.getPath();
 		try
 		{
@@ -122,4 +118,16 @@ public class CameoApp extends Application
 		}
 		return output;
 	}
+
+	final KeyCombination newFileHotkey = new KeyCodeCombination(KeyCode.N, KeyCombination.CONTROL_DOWN);
+
+	EventHandler<KeyEvent> hotkeyHandler = new EventHandler<KeyEvent>() {
+        @Override
+        public void handle(KeyEvent event) {
+            if (newFileHotkey.match(event)) {
+                System.out.println("Ctrl+N pressed");
+                openDocument();
+            }
+        }
+    };
 }
