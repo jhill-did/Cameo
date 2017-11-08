@@ -25,6 +25,7 @@ public class DocumentArea extends StackPane
 				model.selectedDocument.set(newValue.intValue());
 			}
 		});
+
 		model.selectedDocument.addListener(new ChangeListener<Number>()
 		{
 			@Override
@@ -43,7 +44,21 @@ public class DocumentArea extends StackPane
 				{
 					if (change.wasRemoved())
 					{
-						// System.out.println(change.getRemoved().get(0).getText());
+						DocumentTab removedDocumentTab = (DocumentTab) change.getRemoved().get(0);
+						int targetDocumentIndex = -1;
+						for (int index = 0; index < model.documents.size(); index++)
+						{
+							if (model.documents.get(index).id.equals(removedDocumentTab.document.id))
+							{
+								targetDocumentIndex = index;
+								break;
+							}
+						}
+						
+						if (targetDocumentIndex >= 0)
+						{
+							model.documents.remove(targetDocumentIndex);
+						}
 					}
 				}
 			}
@@ -59,6 +74,27 @@ public class DocumentArea extends StackPane
 					if (change.wasAdded())
 					{
 						tabPane.getTabs().add(new DocumentTab(change.getAddedSubList().get(0)));
+					}
+					
+					if (change.wasRemoved())
+					{
+						String removedDocumentId = change.getRemoved().get(0).id;
+
+						int targetTabIndex = -1;
+						for (int index = 0; index < tabPane.getTabs().size(); index++)
+						{
+							DocumentTab currentTab = (DocumentTab) tabPane.getTabs().get(index);
+							if (currentTab.document.id.equals(removedDocumentId))
+							{
+								targetTabIndex = index;
+								break;
+							}
+						}
+						
+						if (targetTabIndex >= 0)
+						{
+							tabPane.getTabs().remove(targetTabIndex);
+						}
 					}
 				}
 			}

@@ -56,8 +56,6 @@ public class CameoApp extends Application
 		Scene scene = new Scene(root, 600, 600);
 		primaryStage.setScene(scene);
 		
-		scene.addEventHandler(KeyEvent.KEY_PRESSED, hotkeyHandler);
-
 		CameoMenuBar menuBar = new CameoMenuBar(this);
 		
 		root.setTop(menuBar);
@@ -118,16 +116,13 @@ public class CameoApp extends Application
 		}
 		return output;
 	}
+	
+	public void closeCurrentTab()
+	{
+		model.documents.remove(model.selectedDocument.get());
+	}
 
-	final KeyCombination newFileHotkey = new KeyCodeCombination(KeyCode.N, KeyCombination.CONTROL_DOWN);
+	// final KeyCombination newFileHotkey = new KeyCodeCombination(KeyCode.N, KeyCombination.CONTROL_DOWN);
 
-	EventHandler<KeyEvent> hotkeyHandler = new EventHandler<KeyEvent>() {
-        @Override
-        public void handle(KeyEvent event) {
-            if (newFileHotkey.match(event)) {
-                System.out.println("Ctrl+N pressed");
-                openDocument();
-            }
-        }
-    };
+
 }

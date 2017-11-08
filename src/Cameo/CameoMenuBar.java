@@ -6,7 +6,6 @@ import javax.swing.JPopupMenu.Separator;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.*;
-import javafx.scene.input.KeyCombination;
 import javafx.scene.*;
 import javafx.stage.*;
 import javafx.scene.input.*;
@@ -26,6 +25,15 @@ public class CameoMenuBar extends MenuBar
 		MenuItem closeTab = new MenuItem("Close Tab");
 		closeTab.setAccelerator(new KeyCodeCombination(KeyCode.W, KeyCombination.CONTROL_DOWN));
 		
+		newFile.setOnAction(new EventHandler<ActionEvent>()
+		{
+	        @Override
+	        public void handle(ActionEvent e) 
+	        {
+	        	parent.openDocument();
+	        }
+	    });
+		
 		openFile.setOnAction(new EventHandler<ActionEvent>()
 		{
 			@Override
@@ -38,6 +46,15 @@ public class CameoMenuBar extends MenuBar
 				{
 					parent.openDocument(selectedFile);
 				}				
+			}
+		});
+		
+		closeTab.setOnAction(new EventHandler<ActionEvent>()
+		{
+			@Override
+			public void handle(ActionEvent e)
+			{
+				parent.closeCurrentTab();
 			}
 		});
 		

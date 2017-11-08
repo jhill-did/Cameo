@@ -61,7 +61,7 @@ public class DocumentTab extends Tab
 
 		double lineNumbersTopPadding = 4;
 		lineNumbers.setStyle("-fx-padding: " + lineNumbersTopPadding + " 5 0 5");
-		lineNumbers.setAlignment(Pos.CENTER_RIGHT);
+		lineNumbers.setAlignment(Pos.TOP_RIGHT);
 		
 		ScrollBar sizeTest = new ScrollBar();
 		sizeTest.setOrientation(Orientation.HORIZONTAL);
@@ -93,6 +93,27 @@ public class DocumentTab extends Tab
 		
 		setContent(container);
 	}
+	
+	/*
+	private void updateLineNumbers()
+	{
+		int newLineCount = newValue.length() - newValue.replace("\n", "").length();
+		while (lineNumbers.getChildren().size() - 1 != newLineCount)
+		{
+			int currentLineCount = lineNumbers.getChildren().size() - 1;
+			if (currentLineCount < newLineCount)
+			{
+				Label temp = new Label(currentLineCount + 2 + "");
+				lineNumbers.getChildren().add(temp);
+			}
+			else
+			{
+				lineNumbers.getChildren().remove(currentLineCount - 1);
+			}
+		}
+		
+		document.content = newValue;
+	}*/
 	
 	public String getDocumentId()
 	{
