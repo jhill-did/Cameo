@@ -54,12 +54,14 @@ public class CameoApp extends Application
 		primaryStage.setMaximized(false);
 		
 		Scene scene = new Scene(root, 600, 600);
+		scene.getStylesheets().add("style/core.css");
+		scene.getStylesheets().add("style/materialTheme.css");
 		primaryStage.setScene(scene);
 		
 		CameoMenuBar menuBar = new CameoMenuBar(this);
 		
 		root.setTop(menuBar);
-		
+
 		DocumentArea documentArea = new DocumentArea(model);
 		
 		root.setCenter(documentArea);
@@ -121,8 +123,4 @@ public class CameoApp extends Application
 	{
 		model.documents.remove(model.selectedDocument.get());
 	}
-
-	// final KeyCombination newFileHotkey = new KeyCodeCombination(KeyCode.N, KeyCombination.CONTROL_DOWN);
-
-
 }

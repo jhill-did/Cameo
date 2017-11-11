@@ -55,12 +55,14 @@ public class DocumentTab extends Tab
 			}
 		});
 
+		// hide text area hbar
 		textArea.setText(document.content);
-		textArea.getStylesheets().add("style/style.css");
+		//textArea.getStylesheets().add("style/style.css");
 		textArea.applyCss();
 
 		double lineNumbersTopPadding = 4;
-		lineNumbers.setStyle("-fx-padding: " + lineNumbersTopPadding + " 5 0 5");
+		lineNumbers.getStyleClass().add("line-numbers-box");
+		//lineNumbers.setStyle("-fx-padding: " + lineNumbersTopPadding + " 5 0 5");
 		lineNumbers.setAlignment(Pos.TOP_RIGHT);
 		
 		ScrollBar sizeTest = new ScrollBar();
@@ -88,6 +90,7 @@ public class DocumentTab extends Tab
 		});
 		
 		BorderPane container = new BorderPane();
+		container.getStyleClass().add("document-tab");
 		container.setLeft(scrollPane);
 		container.setCenter(textArea);
 		

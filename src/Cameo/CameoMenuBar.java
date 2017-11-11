@@ -66,5 +66,9 @@ public class CameoMenuBar extends MenuBar
 		getMenus().add(file);
 		edit.getItems().addAll(undo, redo);
 		getMenus().add(edit);
+		
+		// Handle in application state.
+		// this.setVisible(false);
+		// this.setManaged(false);
 	}
 }
