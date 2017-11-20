@@ -90,7 +90,7 @@ public class DocumentTab extends Tab
 		});
 		
 		BorderPane container = new BorderPane();
-		container.getStyleClass().add("document-tab");
+		container.getStyleClass().add("document-tab");		
 		container.setLeft(scrollPane);
 		container.setCenter(textArea);
 		

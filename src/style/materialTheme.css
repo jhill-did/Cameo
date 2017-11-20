@@ -1,8 +1,14 @@
 /* Storage: a5ffe1 (light blue) */
 /* Background #101218 (off black) */
 
+.temp
+{
+  -fx-background-color:  #101218;
+}
+
 .text-area
 {
+  -fx-focus-color: transparent;
   -fx-text-fill: #a5ffe1;
   -fx-background-insets: 0;
   -fx-background-color: transparent;

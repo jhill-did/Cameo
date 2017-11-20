@@ -2,3 +2,10 @@
 {
   -fx-hbar-policy: never;
 }
+
+.scroll-pane
+{
+  -fx-background-insets: 0;
+  -fx-background-color: transparent;
+  -fx-padding: 0;
+}
