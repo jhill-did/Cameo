@@ -26,6 +26,8 @@ public class DocumentTab extends Tab
 	
 	public DocumentTab(Document document)
 	{
+		this.getStyleClass().add("document-text");
+
 		this.document = document;
 		
 		// Set tab title
@@ -36,13 +38,13 @@ public class DocumentTab extends Tab
 			@Override
 			public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue)
 			{
-				int newLineCount = newValue.length() - newValue.replace("\n", "").length();
-				while (lineNumbers.getChildren().size() - 1 != newLineCount)
+				int newLineCount = newValue.length() - newValue.replace("\n", "").length() + 1;
+				while (lineNumbers.getChildren().size() != newLineCount)
 				{
-					int currentLineCount = lineNumbers.getChildren().size() - 1;
+					int currentLineCount = lineNumbers.getChildren().size();
 					if (currentLineCount < newLineCount)
 					{
-						Label temp = new Label(currentLineCount + 2 + "");
+						Label temp = new Label(currentLineCount + 1 + "");
 						lineNumbers.getChildren().add(temp);
 					}
 					else
@@ -57,8 +59,6 @@ public class DocumentTab extends Tab
 
 		// hide text area hbar
 		textArea.setText(document.content);
-		//textArea.getStylesheets().add("style/style.css");
-		textArea.applyCss();
 
 		double lineNumbersTopPadding = 4;
 		lineNumbers.getStyleClass().add("line-numbers-box");
@@ -95,6 +95,7 @@ public class DocumentTab extends Tab
 		container.setCenter(textArea);
 		
 		setContent(container);
+		
 	}
 	
 	/*

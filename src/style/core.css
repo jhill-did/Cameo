@@ -9,3 +9,13 @@
   -fx-background-color: transparent;
   -fx-padding: 0;
 }
+
+.text-area
+{
+  -fx-font-size: 16px;
+}
+
+.line-numbers-box
+{
+  -fx-font-size: 16px;
+}
