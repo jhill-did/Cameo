@@ -1,9 +1,15 @@
 /* Storage: a5ffe1 (light blue) */
 /* Background #101218 (off black) */
+/* Control Text Color: #82848e (light gray) */
 
 .temp
 {
-  -fx-background-color:  #101218;
+  -fx-background-color: #101218;
+}
+
+.status-bar
+{
+  -fx-background-color: #101218;
 }
 
 .text-area
@@ -41,4 +47,23 @@
 {
   -fx-background-radius: 0;
   -fx-background-insets: 0;
+}
+
+
+/* Tab Pane stuff */
+.tab-pane > .tab-header-area > .headers-region > .tab > .tab-container > .tab-label {
+  -fx-text-fill: #C9CCDB;
+}
+
+.tab-pane > .tab-header-area > .headers-region > .tab
+{
+  -fx-background-color: #101218;
+  -fx-background-insets: 0 1 1 0, 1 2 1 1, 2 3 1 2;
+  -fx-background-radius: 0 0 0 0, 0 0 0 0, 0 0 0 0;
+  -fx-padding: 0.083333em 0.5em 0.0769em 0.5em; /* 1 6 0.99 6 */
+}
+
+.tab-pane > .tab-header-area > .tab-header-background
+{
+  -fx-background-color: #101218;
 }

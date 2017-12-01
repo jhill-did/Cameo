@@ -33,6 +33,7 @@ public class DocumentTab extends Tab
 		// Set tab title
 		setText(document.filename);
 		
+		// Handle adding and removing line number rows when the file contents are changed.
 		textArea.textProperty().addListener(new ChangeListener<String>()
 		{
 			@Override
@@ -57,16 +58,11 @@ public class DocumentTab extends Tab
 			}
 		});
 
-		// hide text area hbar
 		textArea.setText(document.content);
 
 		double lineNumbersTopPadding = 4;
 		lineNumbers.getStyleClass().add("line-numbers-box");
-		//lineNumbers.setStyle("-fx-padding: " + lineNumbersTopPadding + " 5 0 5");
 		lineNumbers.setAlignment(Pos.TOP_RIGHT);
-		
-		ScrollBar sizeTest = new ScrollBar();
-		sizeTest.setOrientation(Orientation.HORIZONTAL);
 		
 		ScrollPane scrollPane = new ScrollPane();
 		scrollPane.setContent(lineNumbers);
@@ -97,27 +93,6 @@ public class DocumentTab extends Tab
 		setContent(container);
 		
 	}
-	
-	/*
-	private void updateLineNumbers()
-	{
-		int newLineCount = newValue.length() - newValue.replace("\n", "").length();
-		while (lineNumbers.getChildren().size() - 1 != newLineCount)
-		{
-			int currentLineCount = lineNumbers.getChildren().size() - 1;
-			if (currentLineCount < newLineCount)
-			{
-				Label temp = new Label(currentLineCount + 2 + "");
-				lineNumbers.getChildren().add(temp);
-			}
-			else
-			{
-				lineNumbers.getChildren().remove(currentLineCount - 1);
-			}
-		}
-		
-		document.content = newValue;
-	}*/
 	
 	public String getDocumentId()
 	{

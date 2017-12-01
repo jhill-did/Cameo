@@ -66,11 +66,18 @@ public class CameoApp extends Application
 		
 		root.setCenter(documentArea);
 		
+		// Setup status bar.
 		Label statusLabel = new Label();
 		statusLabel.textProperty().bind(model.statusMessage);
+		model.statusMessage.set("Hello World");
+
+		HBox statusBar = new HBox();
+		statusBar.getStyleClass().add("status-bar");
+		statusBar.getChildren().add(statusLabel);
 		
-		root.setBottom(statusLabel);
-				
+		root.setBottom(statusBar);
+		
+		// Show me what you got.
 		primaryStage.show();
 		
 		// Test automatically open file.
