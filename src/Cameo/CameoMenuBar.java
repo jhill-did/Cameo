@@ -61,6 +61,12 @@ public class CameoMenuBar extends MenuBar
 		Menu edit = new Menu("Edit");
 		MenuItem undo = new MenuItem("Undo");
 		MenuItem redo = new MenuItem("Redo");
+		
+		Menu font = new Menu("Font");
+		
+		Menu Color = new Menu("Color");
+		
+		Menu help = new Menu("Help");
 
 		file.getItems().addAll(newFile, openFile, separator, closeTab);
 		getMenus().add(file);
