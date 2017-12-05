@@ -1,11 +1,12 @@
 package Cameo.Model;
 
 import java.util.UUID;
+import javafx.beans.property.*;
 
 public class Document
 {
 	public String id = UUID.randomUUID().toString();
-	public String filename;
-	public String fullPath;
+	public SimpleStringProperty filename = new SimpleStringProperty();
+	public SimpleStringProperty fullPath = new SimpleStringProperty();
 	public String content;
 }

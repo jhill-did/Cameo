@@ -2,7 +2,9 @@ package Cameo;
 import java.io.File;
 
 import javax.swing.JPopupMenu.Separator;
+import javax.swing.plaf.metal.MetalPopupMenuSeparatorUI;
 
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.*;
@@ -14,17 +16,9 @@ public class CameoMenuBar extends MenuBar
 {
 	public CameoMenuBar(CameoApp parent)
 	{
-		Menu file = new Menu("File");
+		
 		MenuItem newFile = new MenuItem("New File");
 		newFile.setAccelerator(new KeyCodeCombination(KeyCode.N, KeyCombination.CONTROL_DOWN));
-		MenuItem openFile = new MenuItem("Open File");
-		openFile.setAccelerator(new KeyCodeCombination(KeyCode.O, KeyCombination.CONTROL_DOWN));
-		
-		SeparatorMenuItem separator = new SeparatorMenuItem();
-		
-		MenuItem closeTab = new MenuItem("Close Tab");
-		closeTab.setAccelerator(new KeyCodeCombination(KeyCode.W, KeyCombination.CONTROL_DOWN));
-		
 		newFile.setOnAction(new EventHandler<ActionEvent>()
 		{
 	        @Override
@@ -34,6 +28,8 @@ public class CameoMenuBar extends MenuBar
 	        }
 	    });
 		
+		MenuItem openFile = new MenuItem("Open File...");
+		openFile.setAccelerator(new KeyCodeCombination(KeyCode.O, KeyCombination.CONTROL_DOWN));
 		openFile.setOnAction(new EventHandler<ActionEvent>()
 		{
 			@Override
@@ -49,6 +45,30 @@ public class CameoMenuBar extends MenuBar
 			}
 		});
 		
+		MenuItem save = new MenuItem("Save");
+		save.setAccelerator(new KeyCodeCombination(KeyCode.S, KeyCombination.CONTROL_DOWN));
+		save.setOnAction(new EventHandler<ActionEvent>()
+		{
+			@Override
+			public void handle(ActionEvent arg0)
+			{
+				parent.saveCurrentTab();
+			}
+		});
+		
+		MenuItem saveAs = new MenuItem("Save As...");
+		saveAs.setAccelerator(new KeyCodeCombination(KeyCode.S, KeyCombination.CONTROL_DOWN, KeyCombination.SHIFT_DOWN));
+		saveAs.setOnAction(new EventHandler<ActionEvent>()
+		{
+			@Override
+			public void handle(ActionEvent arg0)
+			{
+				parent.saveAsCurrentTab();
+			}
+		});
+		
+		MenuItem closeTab = new MenuItem("Close Tab");
+		closeTab.setAccelerator(new KeyCodeCombination(KeyCode.W, KeyCombination.CONTROL_DOWN));
 		closeTab.setOnAction(new EventHandler<ActionEvent>()
 		{
 			@Override
@@ -58,20 +78,59 @@ public class CameoMenuBar extends MenuBar
 			}
 		});
 		
-		Menu edit = new Menu("Edit");
-		MenuItem undo = new MenuItem("Undo");
-		MenuItem redo = new MenuItem("Redo");
-		
-		Menu font = new Menu("Font");
-		
-		Menu Color = new Menu("Color");
-		
-		Menu help = new Menu("Help");
+		MenuItem closeAllTabs = new MenuItem("Close All Tabs");
+		closeAllTabs.setAccelerator(new KeyCodeCombination(KeyCode.W, KeyCombination.CONTROL_DOWN, KeyCombination.SHIFT_DOWN));
+		closeAllTabs.setOnAction(new EventHandler<ActionEvent>()
+		{
+			@Override
+			public void handle(ActionEvent e)
+			{
+				while (parent.model.documents.size() > 0)
+				{
+					parent.closeCurrentTab();
+				}
+			}
+		});
 
-		file.getItems().addAll(newFile, openFile, separator, closeTab);
+		MenuItem exit = new MenuItem("Exit");
+		exit.setOnAction(new EventHandler<ActionEvent>()
+		{
+			@Override
+			public void handle(ActionEvent e)
+			{
+				Platform.exit();
+				System.exit(0);
+			}
+		});
+		
+		Menu file = new Menu("File");
+		file.getItems().addAll(newFile, openFile, save, saveAs, new SeparatorMenuItem(), closeTab, closeAllTabs, new SeparatorMenuItem(), exit);
 		getMenus().add(file);
-		edit.getItems().addAll(undo, redo);
+		
+		MenuItem undo = new MenuItem("Undo");
+		undo.setOnAction(new EventHandler<ActionEvent>()
+		{
+			@Override
+			public void handle(ActionEvent e)
+			{
+
+			}
+		});
+		
+		MenuItem redo = new MenuItem("Redo");
+		MenuItem preferences = new MenuItem("Preferences...");
+		
+		Menu edit = new Menu("Edit");
+		edit.getItems().addAll(undo, redo, new SeparatorMenuItem(), preferences);
 		getMenus().add(edit);
+
+		Menu help = new Menu("Help");
+		MenuItem helpContents = new MenuItem("Help Contents...");
+		MenuItem about = new MenuItem("About...");
+
+		help.getItems().addAll(helpContents, new SeparatorMenuItem(), about);
+		
+		getMenus().add(help);
 		
 		// Handle in application state.
 		// this.setVisible(false);

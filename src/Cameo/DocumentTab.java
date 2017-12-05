@@ -31,7 +31,7 @@ public class DocumentTab extends Tab
 		this.document = document;
 		
 		// Set tab title
-		setText(document.filename);
+		textProperty().bind(document.filename);
 		
 		// Handle adding and removing line number rows when the file contents are changed.
 		textArea.textProperty().addListener(new ChangeListener<String>()
@@ -101,16 +101,26 @@ public class DocumentTab extends Tab
 	
 	public String getDocumentPath()
 	{
-		return document.fullPath;
+		return document.fullPath.get();
 	}
 	
 	public String getDocumentFilename()
 	{
-		return document.filename;
+		return document.filename.get();
 	}
 	
 	public String getDocumentText()
 	{
 		return document.content;
+	}
+	
+	public void undo()
+	{
+		textArea.undo();
+	}
+	
+	public void redo()
+	{
+		textArea.redo();
 	}
 }

@@ -1,13 +1,10 @@
 package Cameo;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
-import javafx.scene.control.TextArea;
 import javafx.scene.layout.*;
 import Cameo.Model.ApplicationModel;
 import Cameo.Model.Document;
-import javafx.beans.property.Property;
 import javafx.beans.value.*;
-import javafx.event.*;
 import javafx.collections.*;
 
 public class DocumentArea extends StackPane
@@ -22,11 +19,11 @@ public class DocumentArea extends StackPane
 			@Override
 			public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue)
 			{
-				model.selectedDocument.set(newValue.intValue());
+				model.selectedDocumentIndex.set(newValue.intValue());
 			}
 		});
 
-		model.selectedDocument.addListener(new ChangeListener<Number>()
+		model.selectedDocumentIndex.addListener(new ChangeListener<Number>()
 		{
 			@Override
 			public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue)

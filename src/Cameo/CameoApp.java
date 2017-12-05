@@ -3,6 +3,8 @@ package Cameo;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
 
 import Cameo.Model.*;
 import javafx.application.*;
@@ -14,7 +16,17 @@ import javafx.beans.binding.*;
 import javafx.beans.property.*;
 import javafx.event.*;
 import javafx.scene.input.*;
-import javafx.collections.ListChangeListener;
+import javafx.collections.*;
+import javafx.beans.value.*;
+
+// TODO:
+// |	Add save, save as menu options.
+// |	Add dialog for changing preferences:
+// |		Theme
+// |		Font style
+// |	Add Help submenu dialogs.
+// |	Disable mouse wheel scrolling on line numbers.
+// | 	Ask for save when closing.
 
 public class CameoApp extends Application
 {
@@ -31,8 +43,8 @@ public class CameoApp extends Application
 	public void start(Stage primaryStage) throws Exception
 	{		
 		mainStage = primaryStage;
-		model.documents.addListener(new ListChangeListener<Document>() {
-
+		model.documents.addListener(new ListChangeListener<Document>()
+		{
 			@Override
 			public void onChanged(Change<? extends Document> change)
 			{
@@ -40,12 +52,10 @@ public class CameoApp extends Application
 				{
 					if (change.wasRemoved())
 					{
-						Document removed = change.getRemoved().get(0);
-						System.out.println(removed.filename);
+						// Document removed = change.getRemoved().get(0);
 					}
 				}
 			}
-			
 		});
 
 		BorderPane root = new BorderPane();
@@ -67,9 +77,25 @@ public class CameoApp extends Application
 		root.setCenter(documentArea);
 		
 		// Setup status bar.
+		model.selectedDocumentIndex.addListener(new ChangeListener<Number>()
+		{
+			@Override
+			public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue)
+			{
+				if (model.selectedDocumentIndex.get() > -1)
+				{
+					String currentFilePath = model.documents.get(model.selectedDocumentIndex.get()).fullPath.get();
+					model.statusMessage.set(currentFilePath);
+				}
+				else
+				{
+					model.statusMessage.set("");
+				}		
+			}
+		});
+
 		Label statusLabel = new Label();
 		statusLabel.textProperty().bind(model.statusMessage);
-		model.statusMessage.set("Hello World");
 
 		HBox statusBar = new HBox();
 		statusBar.getStyleClass().add("status-bar");
@@ -81,7 +107,7 @@ public class CameoApp extends Application
 		primaryStage.show();
 		
 		// Test automatically open file.
-		openDocument(new File("E:/Users/Puddin/Documents/Projects/Tools/Cameo/src/Cameo/CameoApp.java"));
+		openDocument(new File("./src/Cameo/CameoApp.java"));
 	}
     
     void openDocument()
@@ -96,8 +122,8 @@ public class CameoApp extends Application
 		{
 			// If no file was specified let's make a new document.
 			temp = new Document();
-			temp.filename = "Untitled";
-			temp.fullPath = null;
+			temp.filename.set("Untitled");
+			temp.fullPath.setValue(null);
 			temp.content = "";
 		}
 		else
@@ -107,14 +133,14 @@ public class CameoApp extends Application
 		}
 		
 		model.documents.add(temp);
-		model.selectedDocument.set(model.documents.size() - 1);
+		model.selectedDocumentIndex.set(model.documents.size() - 1);
 	}
 	
 	private Document loadDocument(File file)
 	{
 		Document output = new Document();
-		output.filename = file.getName();
-		output.fullPath = file.getPath();
+		output.filename.set(file.getName());
+		output.fullPath.set(file.getPath());
 		try
 		{
 			output.content = String.join("\n", Files.readAllLines(file.toPath()));
@@ -126,8 +152,64 @@ public class CameoApp extends Application
 		return output;
 	}
 	
+	public void undoCurrentTab()
+	{
+		
+	}
+	
+	public void redoCurrentTab()
+	{
+		// model.documents.get(model.selectedDocumentIndex.get()).redo();
+	}
+	
 	public void closeCurrentTab()
 	{
-		model.documents.remove(model.selectedDocument.get());
+		//model.documents.remove(model.selectedDocumentIndex.get());
+	}
+	
+	public void saveCurrentTab()
+	{
+		if (model.selectedDocumentIndex.get() > 0)
+		{
+			Document selectedDocument = model.documents.get(model.selectedDocumentIndex.get());
+			if (selectedDocument.fullPath.get() == null)
+			{
+				saveAsCurrentTab();
+				return;
+			}
+			else
+			{
+				saveDocument(selectedDocument);
+			}
+		}
+	}
+	
+	public void saveAsCurrentTab()
+	{
+		if (model.selectedDocumentIndex.get() > 0)
+		{
+			Document selectedDocument = model.documents.get(model.selectedDocumentIndex.get());
+			FileChooser saveAsDialog = new FileChooser();
+			File saveLocation = saveAsDialog.showSaveDialog(mainStage);
+			if (saveLocation != null)
+			{
+				selectedDocument.fullPath.set(saveLocation.getPath());
+				selectedDocument.filename.set(saveLocation.getName());
+				saveDocument(selectedDocument);
+			};
+		}
+	}
+	
+	public void saveDocument(Document document)
+	{
+		String currentContent = document.content;
+		try
+		{
+			Files.write(Paths.get(document.fullPath.get()), currentContent.getBytes(), StandardOpenOption.CREATE);
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+		}
 	}
 }

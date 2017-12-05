@@ -4,7 +4,7 @@ import javafx.collections.*;
 
 public class ApplicationModel
 {
-	public SimpleIntegerProperty selectedDocument = new SimpleIntegerProperty(0);
+	public SimpleIntegerProperty selectedDocumentIndex = new SimpleIntegerProperty(0);
 	
 	public ObservableList<Document> documents = FXCollections.observableArrayList();
 	
