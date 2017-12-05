@@ -15,6 +15,9 @@ import javafx.scene.input.*;
 
 public class CameoMenuBar extends MenuBar 
 {
+
+	PreferencesWindow preferencesWindow = null;
+	
 	public CameoMenuBar(CameoApp parent)
 	{
 		
@@ -129,6 +132,19 @@ public class CameoMenuBar extends MenuBar
 		});
 		
 		MenuItem preferences = new MenuItem("Preferences...");
+		preferences.setOnAction(new EventHandler<ActionEvent>()
+		{
+			@Override
+			public void handle(ActionEvent e)
+			{
+				if (preferencesWindow == null)
+				{
+					preferencesWindow = new PreferencesWindow(parent, parent.model);
+				}
+				
+				preferencesWindow.showAndWait();
+			}
+		});
 		
 		Menu edit = new Menu("Edit");
 		edit.getItems().addAll(undo, redo, new SeparatorMenuItem(), preferences);

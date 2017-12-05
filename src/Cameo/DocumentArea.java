@@ -18,6 +18,8 @@ public class DocumentArea extends StackPane
 		this.parent = parent;
 		this.model = model;
 		
+		this.getStyleClass().add("document-area");
+		
 		// It's pretty stupid, but this connects model.selectedDocument to the tabPane's selectedDocument value.
 		tabPane.getSelectionModel().selectedIndexProperty().addListener(new ChangeListener<Number>()
 		{

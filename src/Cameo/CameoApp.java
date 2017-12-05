@@ -29,10 +29,10 @@ import javafx.beans.value.*;
 // |	Add dialog for changing preferences:
 // |		Theme
 // |		Font style
+// |	Add an open file tip when no tabs are open.
 
 public class CameoApp extends Application
 {
-	
 	public static void main(String[] args)
 	{
 		CameoApp.launch(args);
@@ -41,13 +41,14 @@ public class CameoApp extends Application
 	public Stage mainStage;
 	ApplicationModel model = new ApplicationModel();
 	DocumentArea documentArea;
+	public BorderPane root; 
 	
 	@Override
 	public void start(Stage primaryStage) throws Exception
 	{		
 		mainStage = primaryStage;
 
-		BorderPane root = new BorderPane();
+		root = new BorderPane();
 		
 		primaryStage.setTitle("Cameo");
 		primaryStage.setMaximized(false);

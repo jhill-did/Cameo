@@ -9,6 +9,8 @@ public class ApplicationModel
 	public ObservableList<Document> documents = FXCollections.observableArrayList();
 	
 	public SimpleStringProperty statusMessage = new SimpleStringProperty("");
+	
+	public Preferences preferences = new Preferences();
 }
 
 // Application

@@ -7,6 +7,12 @@
   textColor: #a5ffe1;
   controlTextColor: #c9ccdb;
   backgroundColor: #101218;
+  -fx-font-family: 'Roboto', 'Segoe UI', 'sans-serif';
+}
+
+.document-area
+{
+  -fx-font-family: 'Roboto', 'Segoe UI', 'sans-serif';
 }
 
 .temp
@@ -33,7 +39,7 @@
 .text-area .content
 {
   -fx-background-color: backgroundColor;
-  -fx-font-family: 'Roboto', 'Segoe UI', 'sans-serif';
+  /*-fx-font-family: textFont;*/
   -fx-background-radius: 0;
   -fx-background-insets: 0;
 }
