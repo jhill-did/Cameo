@@ -1,5 +1,5 @@
 // Created by: Jordan Hill
-// Contact me at http://www.github.com/puddin482/Cameo
+// Bump me at http://www.github.com/puddin482/Cameo
 
 package Cameo;
 
@@ -21,12 +21,10 @@ import javafx.scene.control.ButtonBar.ButtonData;
 import javafx.beans.binding.*;
 import javafx.beans.property.*;
 import javafx.event.*;
+import javafx.geometry.Pos;
 import javafx.scene.input.*;
 import javafx.collections.*;
 import javafx.beans.value.*;
-
-// TODO:
-// |	Add an open file tip when no tabs are open.
 
 public class CameoApp extends Application
 {
@@ -61,7 +59,17 @@ public class CameoApp extends Application
 
 		documentArea = new DocumentArea(this, model);
 		
-		root.setCenter(documentArea);
+		Label tipLabel = new Label("Press Ctrl + O to open a file and get started.");
+		
+		VBox tipBox = new VBox();
+		tipBox.getStyleClass().add("tip-box");
+		tipBox.setAlignment(Pos.CENTER);
+		tipBox.getChildren().add(tipLabel);
+		
+		StackPane centerStack = new StackPane();
+		centerStack.getChildren().addAll(tipBox, documentArea);
+		
+		root.setCenter(centerStack);
 		
 		// Setup status bar.
 		model.selectedDocumentIndex.addListener(new ChangeListener<Number>()

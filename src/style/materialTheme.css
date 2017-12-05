@@ -79,3 +79,10 @@
 {
   -fx-background-color: backgroundColor;
 }
+
+.tip-box
+{
+  -fx-background-color: backgroundColor;
+  -fx-font-family: 'Segoe UI';
+  -fx-font-size: 23px;
+}
