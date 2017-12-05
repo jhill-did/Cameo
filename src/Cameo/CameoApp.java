@@ -38,6 +38,7 @@ public class CameoApp extends Application
 
 	public Stage mainStage;
 	ApplicationModel model = new ApplicationModel();
+	DocumentArea documentArea;
 	
 	@Override
 	public void start(Stage primaryStage) throws Exception
@@ -72,7 +73,7 @@ public class CameoApp extends Application
 		
 		root.setTop(menuBar);
 
-		DocumentArea documentArea = new DocumentArea(model);
+		documentArea = new DocumentArea(model);
 		
 		root.setCenter(documentArea);
 		
@@ -154,17 +155,25 @@ public class CameoApp extends Application
 	
 	public void undoCurrentTab()
 	{
-		
+		DocumentTab currentDocumentTab = documentArea.getCurrentDocumentTab();
+		if (currentDocumentTab != null)
+		{
+			documentArea.getCurrentDocumentTab().undo();
+		}
 	}
 	
 	public void redoCurrentTab()
 	{
-		// model.documents.get(model.selectedDocumentIndex.get()).redo();
+		DocumentTab currentDocumentTab = documentArea.getCurrentDocumentTab();
+		if (currentDocumentTab != null)
+		{
+			documentArea.getCurrentDocumentTab().redo();
+		}
 	}
 	
 	public void closeCurrentTab()
 	{
-		//model.documents.remove(model.selectedDocumentIndex.get());
+		model.documents.remove(model.selectedDocumentIndex.get());
 	}
 	
 	public void saveCurrentTab()

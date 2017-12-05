@@ -113,11 +113,20 @@ public class CameoMenuBar extends MenuBar
 			@Override
 			public void handle(ActionEvent e)
 			{
-
+				parent.undoCurrentTab();
 			}
 		});
 		
 		MenuItem redo = new MenuItem("Redo");
+		redo.setOnAction(new EventHandler<ActionEvent>()
+		{
+			@Override
+			public void handle(ActionEvent e)
+			{
+				parent.redoCurrentTab();
+			}
+		});
+		
 		MenuItem preferences = new MenuItem("Preferences...");
 		
 		Menu edit = new Menu("Edit");

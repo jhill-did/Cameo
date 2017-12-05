@@ -9,9 +9,13 @@ import javafx.collections.*;
 
 public class DocumentArea extends StackPane
 {
+	ApplicationModel model;
+	final TabPane tabPane = new TabPane();
+	
 	public DocumentArea(ApplicationModel model)
 	{		
-		final TabPane tabPane = new TabPane();
+		this.model = model;
+		
 		
 		// It's pretty stupid, but this connects model.selectedDocument to the tabPane's selectedDocument value.
 		tabPane.getSelectionModel().selectedIndexProperty().addListener(new ChangeListener<Number>()
@@ -98,5 +102,15 @@ public class DocumentArea extends StackPane
 		});
 		
 		this.getChildren().add(tabPane);
+	}
+	
+	public DocumentTab getCurrentDocumentTab()
+	{
+		if (model.selectedDocumentIndex.get() > -1)
+		{
+			return (DocumentTab) tabPane.getTabs().get(model.selectedDocumentIndex.get());
+		}
+		
+		return null;
 	}
 }
