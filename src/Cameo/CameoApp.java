@@ -26,9 +26,6 @@ import javafx.collections.*;
 import javafx.beans.value.*;
 
 // TODO:
-// |	Add dialog for changing preferences:
-// |		Theme
-// |		Font style
 // |	Add an open file tip when no tabs are open.
 
 public class CameoApp extends Application

@@ -8,4 +8,6 @@ public class Preferences
 	public SimpleStringProperty font = new SimpleStringProperty();
 	public SimpleIntegerProperty fontSize = new SimpleIntegerProperty();
 	public SimpleObjectProperty<Color> fontColor = new SimpleObjectProperty<Color>();
+	public SimpleBooleanProperty bold = new SimpleBooleanProperty();
+	public SimpleBooleanProperty italic = new SimpleBooleanProperty();
 }

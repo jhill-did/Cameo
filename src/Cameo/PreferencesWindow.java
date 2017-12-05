@@ -1,16 +1,12 @@
 package Cameo;
 
 import java.awt.GraphicsEnvironment;
-import java.util.Arrays;
-
 import Cameo.Model.ApplicationModel;
 import javafx.scene.*;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.stage.*;
 import javafx.scene.control.*;
-import javafx.beans.Observable;
-import javafx.beans.property.SimpleListProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.*;
@@ -99,7 +95,26 @@ public class PreferencesWindow extends Stage
 		
 		
 		ToggleButton boldButton = new ToggleButton("B");
+		model.preferences.bold.bind(boldButton.selectedProperty());
+		model.preferences.bold.addListener(new ChangeListener<Boolean>()
+		{
+			@Override
+			public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue)
+			{
+				updateStyle();
+			}
+		});
+
 		ToggleButton italicButton = new ToggleButton("I");
+		model.preferences.italic.bind(italicButton.selectedProperty());
+		model.preferences.italic.addListener(new ChangeListener<Boolean>()
+		{
+			@Override
+			public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue)
+			{
+				updateStyle();
+			}
+		});
 		
 		VBox fontColorColumn = new VBox();
 		fontColorColumn.getChildren().addAll(fontColorLabel, fontColorPicker);
@@ -154,6 +169,16 @@ public class PreferencesWindow extends Stage
 		}
 		
 		style += "-fx-font-size: " + model.preferences.fontSize.get() + "px;";
+		
+		if (model.preferences.bold.get())
+		{
+			style += "-fx-font-weight: bold;";
+		}
+		
+		if (model.preferences.italic.get())
+		{
+			style += "-fx-font-style: italic;";
+		}
 		
 		parent.documentArea.setStyle(style);
 	}
