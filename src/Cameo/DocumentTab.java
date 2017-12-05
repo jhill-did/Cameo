@@ -14,6 +14,7 @@ import javafx.scene.layout.*;
 import javafx.scene.text.TextAlignment;
 import javafx.scene.text.*;
 import javafx.event.*;
+import javafx.scene.input.*;
 
 // | container : border setup placing lineNumbers on the left and textArea in the center. 
 //	 | scrollPane : Scrolls the innerContainer
@@ -53,30 +54,16 @@ public class DocumentTab extends Tab
 		});
 
 		textArea.setText(document.content);
+		updateLineNumbers();
 		
 		// Handle adding and removing line number rows when the file contents are changed.
 		textArea.textProperty().addListener(new ChangeListener<String>()
 		{
 			@Override
 			public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue)
-			{
-				int newLineCount = newValue.length() - newValue.replace("\n", "").length() + 1;
-				while (lineNumbers.getChildren().size() != newLineCount)
-				{
-					int currentLineCount = lineNumbers.getChildren().size();
-					if (currentLineCount < newLineCount)
-					{
-						Label temp = new Label(currentLineCount + 1 + "");
-						lineNumbers.getChildren().add(temp);
-					}
-					else
-					{
-						lineNumbers.getChildren().remove(currentLineCount - 1);
-					}
-				}
-				
+			{	
 				document.content = newValue;
-				
+				updateLineNumbers();
 				document.requiresSave.set(true);
 			}
 		});
@@ -84,6 +71,14 @@ public class DocumentTab extends Tab
 		double lineNumbersTopPadding = 4;
 		lineNumbers.getStyleClass().add("line-numbers-box");
 		lineNumbers.setAlignment(Pos.TOP_RIGHT);
+		lineNumbers.setOnScroll(new EventHandler<ScrollEvent>()
+		{
+			@Override
+			public void handle(ScrollEvent e)
+			{
+				e.consume();
+			}
+		});
 		
 		ScrollPane scrollPane = new ScrollPane();
 		scrollPane.setContent(lineNumbers);
@@ -106,7 +101,7 @@ public class DocumentTab extends Tab
 			}
 		});
 		
-		this.setOnCloseRequest(new EventHandler<Event>()
+		setOnCloseRequest(new EventHandler<Event>()
 		{
 			@Override
 			public void handle(Event e)
@@ -127,7 +122,24 @@ public class DocumentTab extends Tab
 		container.setCenter(textArea);
 		
 		setContent(container);
-		
+	}
+	
+	private void updateLineNumbers()
+	{
+		int newLineCount = document.content.length() - document.content.replace("\n", "").length() + 1;
+		while (lineNumbers.getChildren().size() != newLineCount)
+		{
+			int currentLineCount = lineNumbers.getChildren().size();
+			if (currentLineCount < newLineCount)
+			{
+				Label temp = new Label(currentLineCount + 1 + "");
+				lineNumbers.getChildren().add(temp);
+			}
+			else
+			{
+				lineNumbers.getChildren().remove(currentLineCount - 1);
+			}
+		}
 	}
 	
 	private void updateTitle()

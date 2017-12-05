@@ -31,7 +31,6 @@ import javafx.beans.value.*;
 // |		Font style
 // |	Add Help submenu dialogs.
 // |	Disable mouse wheel scrolling on line numbers.
-// | 	Ask for save when closing.
 
 public class CameoApp extends Application
 {
@@ -100,17 +99,20 @@ public class CameoApp extends Application
 			@Override
 			public void handle(WindowEvent e)
 			{
-				for (int index = model.documents.size() - 1; index >= 0; index--)
+				if (e.getTarget() == primaryStage)
 				{
-					model.selectedDocumentIndex.set(index);
-					closeCurrentTab();
+					for (int index = model.documents.size() - 1; index >= 0; index--)
+					{
+						model.selectedDocumentIndex.set(index);
+						closeCurrentTab();
+					}
 				}
 			}
 		});
 		
 		// Show me what you got.
 		primaryStage.show();
-		
+
 		// Test automatically open file.
 		openDocument(new File("./src/Cameo/CameoApp.java"));
 	}

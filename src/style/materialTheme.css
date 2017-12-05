@@ -2,20 +2,27 @@
 /* Background #101218 (off black) */
 /* Control Text Color: #82848e (light gray) */
 
+.root
+{
+  textColor: #a5ffe1;
+  controlTextColor: #c9ccdb;
+  backgroundColor: #101218;
+}
+
 .temp
 {
-  -fx-background-color: #101218;
+  -fx-background-color: backgroundColor;
 }
 
 .status-bar
 {
-  -fx-background-color: #101218;
+  -fx-background-color: backgroundColor;
 }
 
 .text-area
 {
   -fx-focus-color: transparent;
-  -fx-text-fill: #a5ffe1;
+  -fx-text-fill: textColor;
   -fx-background-insets: 0;
   -fx-background-color: transparent;
   -fx-text-box-border: transparent;
@@ -25,7 +32,7 @@
 
 .text-area .content
 {
-  -fx-background-color: #101218;
+  -fx-background-color: backgroundColor;
   -fx-font-family: 'Roboto', 'Segoe UI', 'sans-serif';
   -fx-background-radius: 0;
   -fx-background-insets: 0;
@@ -38,8 +45,8 @@
 
 .line-numbers-box
 {
-  -fx-background-color: #101218;
-  -fx-text-fill: #C9CCDB;
+  -fx-background-color: backgroundColor;
+  -fx-text-fill: controlTextColor;
 	-fx-padding: 5 5 0 5;
 }
 
@@ -49,15 +56,14 @@
   -fx-background-insets: 0;
 }
 
-
 /* Tab Pane stuff */
 .tab-pane > .tab-header-area > .headers-region > .tab > .tab-container > .tab-label {
-  -fx-text-fill: #C9CCDB;
+  -fx-text-fill: controlTextColor;
 }
 
 .tab-pane > .tab-header-area > .headers-region > .tab
 {
-  -fx-background-color: #101218;
+  -fx-background-color: backgroundColor;
   -fx-background-insets: 0 1 1 0, 1 2 1 1, 2 3 1 2;
   -fx-background-radius: 0 0 0 0, 0 0 0 0, 0 0 0 0;
   -fx-padding: 0.083333em 0.5em 0.0769em 0.5em; /* 1 6 0.99 6 */
@@ -65,5 +71,5 @@
 
 .tab-pane > .tab-header-area > .tab-header-background
 {
-  -fx-background-color: #101218;
+  -fx-background-color: backgroundColor;
 }
