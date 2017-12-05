@@ -14,6 +14,10 @@ import javafx.beans.property.SimpleListProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.*;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.geometry.Orientation;
+import javafx.geometry.Pos;
 
 public class PreferencesWindow extends Stage
 {
@@ -30,17 +34,19 @@ public class PreferencesWindow extends Stage
 		
 		setTitle("Preferences");
 		
-		VBox root = new VBox();
+		setResizable(false);
+		
+		VBox root = new VBox(6);
 		root.setStyle("-fx-padding: 4px");
 
 		Scene mainScene = new Scene(root);
 		
 		String[] systemFonts = GraphicsEnvironment.getLocalGraphicsEnvironment().getAvailableFontFamilyNames();
-		ChoiceBox<String> fontComboBox = new ChoiceBox<String>();
-		fontComboBox.getItems().addAll(systemFonts);
+		ChoiceBox<String> fontChoiceBox = new ChoiceBox<String>();
+		fontChoiceBox.getItems().addAll(systemFonts);
+		fontChoiceBox.setValue("Segoe UI");
 		
-		model.preferences.font.bind(fontComboBox.valueProperty());
-		
+		model.preferences.font.bind(fontChoiceBox.valueProperty());
 		model.preferences.font.addListener(new ChangeListener<String>()
 		{
 			@Override
@@ -53,7 +59,7 @@ public class PreferencesWindow extends Stage
 		Label fontFaceLabel = new Label("Font");
 		
 		VBox fontFaceColumn = new VBox();
-		fontFaceColumn.getChildren().addAll(fontFaceLabel, fontComboBox);
+		fontFaceColumn.getChildren().addAll(fontFaceLabel, fontChoiceBox);
 		
 		Label fontColorLabel = new Label("Color");
 		
@@ -68,14 +74,68 @@ public class PreferencesWindow extends Stage
 			}
 		});
 		
+		Label fontSizeLabel = new Label("Size");
+		ObservableList<Integer> options = FXCollections.observableArrayList(8, 9, 10, 11, 12, 14, 16, 18, 20, 22, 24, 26, 28, 36, 48, 72);
+		ChoiceBox<Integer> fontSizeChoiceBox = new ChoiceBox<Integer>(options);
+		fontSizeChoiceBox.setValue(16);
+		
+		model.preferences.fontSize.bind(fontSizeChoiceBox.valueProperty());
+		model.preferences.fontSize.addListener(new ChangeListener<Number>()
+		{
+			@Override
+			public void changed(ObservableValue<? extends Number> obvservable, Number oldValue, Number newValue1)
+			{
+				updateStyle();
+			}
+		});
+		
+		VBox fontSizeColumn = new VBox();
+		fontSizeColumn.getChildren().addAll(fontSizeLabel, fontSizeChoiceBox);
+		
+		HBox firstRow = new HBox(4);
+		firstRow.getChildren().addAll(fontFaceColumn, fontSizeColumn);
+
+		root.getChildren().add(firstRow);
+		
+		
+		ToggleButton boldButton = new ToggleButton("B");
+		ToggleButton italicButton = new ToggleButton("I");
+		
 		VBox fontColorColumn = new VBox();
-		fontColorColumn.setStyle("-fx-padding: 0 0 0 4px");
 		fontColorColumn.getChildren().addAll(fontColorLabel, fontColorPicker);
 		
-		HBox firstRow = new HBox();
-		firstRow.getChildren().addAll(fontFaceColumn, fontColorColumn);
+		Label fontStyleLabel = new Label("Style");
 		
-		root.getChildren().add(firstRow);
+		HBox fontStyleButtons = new HBox(4);
+		fontStyleButtons.setAlignment(Pos.BOTTOM_LEFT);
+		fontStyleButtons.getChildren().addAll(boldButton, italicButton);
+		
+		VBox fontStyleColumn = new VBox();
+		fontStyleColumn.getChildren().addAll(fontStyleLabel, fontStyleButtons);
+		
+		HBox secondRow = new HBox(4);
+		secondRow.setStyle("-fx-padding: 6px 0 0 0");
+		secondRow.setAlignment(Pos.BOTTOM_LEFT);
+		secondRow.getChildren().addAll(fontStyleColumn, new Separator(Orientation.VERTICAL), fontColorColumn);
+
+		root.getChildren().add(secondRow);
+		
+		Button closeButton = new Button("Close");
+		closeButton.setOnAction(new EventHandler<ActionEvent>()
+		{
+			@Override
+			public void handle(ActionEvent e)
+			{
+				close();
+			}
+		});
+
+		HBox thirdRow = new HBox(4);
+		thirdRow.getChildren().add(closeButton);
+		
+		thirdRow.setAlignment(Pos.BOTTOM_CENTER);
+		
+		root.getChildren().add(thirdRow);		
 			
 		setScene(mainScene);
 	}
@@ -92,6 +152,8 @@ public class PreferencesWindow extends Stage
 		{
 			style += "textColor: " + getColorHex(model.preferences.fontColor.get()) + ";";
 		}
+		
+		style += "-fx-font-size: " + model.preferences.fontSize.get() + "px;";
 		
 		parent.documentArea.setStyle(style);
 	}

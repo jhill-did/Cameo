@@ -1,6 +1,7 @@
 package Cameo;
 import org.omg.CosNaming.NamingContextExtPackage.AddressHelper;
 
+import Cameo.Model.ApplicationModel;
 import Cameo.Model.Document;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -23,12 +24,15 @@ import javafx.scene.input.*;
 
 public class DocumentTab extends Tab
 {
+	ApplicationModel model;
 	Document document;
 	TextArea textArea = new TextArea();
 	VBox lineNumbers = new VBox();
 	
 	public DocumentTab(DocumentArea parent, Document document)
 	{
+		this.model = parent.parent.model;
+		
 		this.getStyleClass().add("document-text");
 
 		this.document = document;
@@ -120,6 +124,18 @@ public class DocumentTab extends Tab
 		container.getStyleClass().add("document-tab");		
 		container.setLeft(scrollPane);
 		container.setCenter(textArea);
+		
+		model.preferences.fontSize.addListener(new ChangeListener<Number>()
+		{
+			@Override
+			public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue)
+			{
+				String style = "-fx-font-size: " + model.preferences.fontSize.get() + "px;";
+				lineNumbers.setStyle(style);
+				textArea.setStyle(style);
+			}	
+		});
+		
 		
 		setContent(container);
 	}
