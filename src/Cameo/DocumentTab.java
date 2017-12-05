@@ -31,7 +31,26 @@ public class DocumentTab extends Tab
 		this.document = document;
 		
 		// Set tab title
-		textProperty().bind(document.filename);
+		updateTitle();
+		document.requiresSave.addListener(new ChangeListener<Boolean>()
+		{
+			@Override
+			public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue)
+			{
+				updateTitle();
+			}
+		});
+		
+		document.filename.addListener(new ChangeListener<String>()
+		{
+			@Override
+			public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue)
+			{
+				updateTitle();
+			}
+		});
+
+		textArea.setText(document.content);
 		
 		// Handle adding and removing line number rows when the file contents are changed.
 		textArea.textProperty().addListener(new ChangeListener<String>()
@@ -55,10 +74,10 @@ public class DocumentTab extends Tab
 				}
 				
 				document.content = newValue;
+				
+				document.requiresSave.set(true);
 			}
 		});
-
-		textArea.setText(document.content);
 
 		double lineNumbersTopPadding = 4;
 		lineNumbers.getStyleClass().add("line-numbers-box");
@@ -92,6 +111,18 @@ public class DocumentTab extends Tab
 		
 		setContent(container);
 		
+	}
+	
+	private void updateTitle()
+	{
+		if (document.requiresSave.get())
+		{
+			setText("*" + document.filename.get());
+		}
+		else
+		{
+			setText(document.filename.get());
+		}
 	}
 	
 	public String getDocumentId()

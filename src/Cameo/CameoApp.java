@@ -1,3 +1,6 @@
+// Created by: Jordan Hill
+// Contact me at http://www.github.com/puddin482
+
 package Cameo;
 
 import java.io.File;
@@ -20,7 +23,6 @@ import javafx.collections.*;
 import javafx.beans.value.*;
 
 // TODO:
-// |	Add save, save as menu options.
 // |	Add dialog for changing preferences:
 // |		Theme
 // |		Font style
@@ -132,6 +134,8 @@ public class CameoApp extends Application
 			// Load file into document.
 			temp = loadDocument(file);
 		}
+
+		temp.requiresSave.set(false);
 		
 		model.documents.add(temp);
 		model.selectedDocumentIndex.set(model.documents.size() - 1);
@@ -150,6 +154,7 @@ public class CameoApp extends Application
 		{
 			e.printStackTrace();
 		}
+
 		return output;
 	}
 	
@@ -220,5 +225,7 @@ public class CameoApp extends Application
 		{
 			e.printStackTrace();
 		}
+		
+		document.requiresSave.set(false);
 	}
 }
