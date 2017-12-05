@@ -29,8 +29,6 @@ import javafx.beans.value.*;
 // |	Add dialog for changing preferences:
 // |		Theme
 // |		Font style
-// |	Add Help submenu dialogs.
-// |	Disable mouse wheel scrolling on line numbers.
 
 public class CameoApp extends Application
 {

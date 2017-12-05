@@ -8,6 +8,7 @@ import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.*;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.*;
 import javafx.stage.*;
 import javafx.scene.input.*;
@@ -133,12 +134,33 @@ public class CameoMenuBar extends MenuBar
 		edit.getItems().addAll(undo, redo, new SeparatorMenuItem(), preferences);
 		getMenus().add(edit);
 
-		Menu help = new Menu("Help");
 		MenuItem helpContents = new MenuItem("Help Contents...");
-		MenuItem about = new MenuItem("About...");
-
-		help.getItems().addAll(helpContents, new SeparatorMenuItem(), about);
+		helpContents.setOnAction(new EventHandler<ActionEvent>()
+		{
+			@Override
+			public void handle(ActionEvent e)
+			{
+				parent.openDocument(new File("./README.md"));
+			}
+		});
 		
+		MenuItem about = new MenuItem("About...");
+		about.setOnAction(new EventHandler<ActionEvent>()
+		{
+			@Override
+			public void handle(ActionEvent e)
+			{
+				Alert alert = new Alert(AlertType.INFORMATION);
+				alert.setTitle("About Cameo");
+				alert.setHeaderText("Created by Jordan Hill");
+				alert.setContentText("Visit www.github.com/puddin482/cameo\nSee the help contents for more information on how to use Cameo.\n");
+				
+				alert.showAndWait();
+			}
+		});
+
+		Menu help = new Menu("Help");
+		help.getItems().addAll(helpContents, new SeparatorMenuItem(), about);
 		getMenus().add(help);
 		
 		// Handle in application state.

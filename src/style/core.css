@@ -19,3 +19,8 @@
 {
   -fx-font-size: 16px;
 }
+
+.status-bar
+{
+  -fx-padding: 2px 0px 2px 4px;
+}
