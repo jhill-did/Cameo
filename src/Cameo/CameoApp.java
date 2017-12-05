@@ -49,21 +49,6 @@ public class CameoApp extends Application
 	public void start(Stage primaryStage) throws Exception
 	{		
 		mainStage = primaryStage;
-		model.documents.addListener(new ListChangeListener<Document>()
-		{
-			@Override
-			public void onChanged(Change<? extends Document> change)
-			{
-				while (change.next())
-				{
-					if (change.wasRemoved())
-					{
-						// model.documents.add(change.getFrom(), change.getRemoved().get(0));
-						// Document removed = change.getRemoved().get(0);
-					}
-				}
-			}
-		});
 
 		BorderPane root = new BorderPane();
 		
@@ -109,6 +94,19 @@ public class CameoApp extends Application
 		statusBar.getChildren().add(statusLabel);
 		
 		root.setBottom(statusBar);
+		
+		primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>()
+		{
+			@Override
+			public void handle(WindowEvent e)
+			{
+				for (int index = model.documents.size() - 1; index >= 0; index--)
+				{
+					model.selectedDocumentIndex.set(index);
+					closeCurrentTab();
+				}
+			}
+		});
 		
 		// Show me what you got.
 		primaryStage.show();
