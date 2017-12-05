@@ -11,11 +11,12 @@ public class DocumentArea extends StackPane
 {
 	ApplicationModel model;
 	final TabPane tabPane = new TabPane();
+	CameoApp parent;
 	
-	public DocumentArea(ApplicationModel model)
+	public DocumentArea(CameoApp parent, ApplicationModel model)
 	{		
+		this.parent = parent;
 		this.model = model;
-		
 		
 		// It's pretty stupid, but this connects model.selectedDocument to the tabPane's selectedDocument value.
 		tabPane.getSelectionModel().selectedIndexProperty().addListener(new ChangeListener<Number>()
@@ -65,6 +66,8 @@ public class DocumentArea extends StackPane
 			}
 		});
 		
+		
+		DocumentArea self = this;
 		model.documents.addListener(new ListChangeListener<Document>()
 		{
 			@Override
@@ -74,7 +77,7 @@ public class DocumentArea extends StackPane
 				{
 					if (change.wasAdded())
 					{
-						tabPane.getTabs().add(new DocumentTab(change.getAddedSubList().get(0)));
+						tabPane.getTabs().add(new DocumentTab(self, change.getAddedSubList().get(0)));
 					}
 					
 					if (change.wasRemoved())

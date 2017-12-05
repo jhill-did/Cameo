@@ -1,5 +1,5 @@
 // Created by: Jordan Hill
-// Contact me at http://www.github.com/puddin482
+// Contact me at http://www.github.com/puddin482/Cameo
 
 package Cameo;
 
@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
+import java.util.Optional;
 
 import Cameo.Model.*;
 import javafx.application.*;
@@ -15,6 +16,8 @@ import javafx.stage.*;
 import javafx.scene.*;
 import javafx.scene.layout.*;
 import javafx.scene.control.*;
+import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.ButtonBar.ButtonData;
 import javafx.beans.binding.*;
 import javafx.beans.property.*;
 import javafx.event.*;
@@ -55,6 +58,7 @@ public class CameoApp extends Application
 				{
 					if (change.wasRemoved())
 					{
+						// model.documents.add(change.getFrom(), change.getRemoved().get(0));
 						// Document removed = change.getRemoved().get(0);
 					}
 				}
@@ -75,7 +79,7 @@ public class CameoApp extends Application
 		
 		root.setTop(menuBar);
 
-		documentArea = new DocumentArea(model);
+		documentArea = new DocumentArea(this, model);
 		
 		root.setCenter(documentArea);
 		
@@ -178,6 +182,17 @@ public class CameoApp extends Application
 	
 	public void closeCurrentTab()
 	{
+		Document currentDocument = model.documents.get(model.selectedDocumentIndex.get());
+		if (currentDocument.requiresSave.get())
+		{
+			if (showRequestSaveDialog(currentDocument, null) == true)
+			{
+				// If this file requires a save, and the user doesn't hit cancel on the request dialog, then we should close it.
+				model.documents.remove(model.selectedDocumentIndex.get());
+			}
+			return;
+		}
+		// If the file wasn't changed, then just close it without asking.
 		model.documents.remove(model.selectedDocumentIndex.get());
 	}
 	
@@ -186,15 +201,7 @@ public class CameoApp extends Application
 		if (model.selectedDocumentIndex.get() > 0)
 		{
 			Document selectedDocument = model.documents.get(model.selectedDocumentIndex.get());
-			if (selectedDocument.fullPath.get() == null)
-			{
-				saveAsCurrentTab();
-				return;
-			}
-			else
-			{
-				saveDocument(selectedDocument);
-			}
+			saveDocument(selectedDocument);
 		}
 	}
 	
@@ -203,19 +210,18 @@ public class CameoApp extends Application
 		if (model.selectedDocumentIndex.get() > 0)
 		{
 			Document selectedDocument = model.documents.get(model.selectedDocumentIndex.get());
-			FileChooser saveAsDialog = new FileChooser();
-			File saveLocation = saveAsDialog.showSaveDialog(mainStage);
-			if (saveLocation != null)
-			{
-				selectedDocument.fullPath.set(saveLocation.getPath());
-				selectedDocument.filename.set(saveLocation.getName());
-				saveDocument(selectedDocument);
-			};
+			saveAsDocument(selectedDocument);
 		}
 	}
 	
 	public void saveDocument(Document document)
 	{
+		if (document.fullPath.get() == null)
+		{
+			saveAsDocument(document);
+			return;
+		}
+		
 		String currentContent = document.content;
 		try
 		{
@@ -227,5 +233,48 @@ public class CameoApp extends Application
 		}
 		
 		document.requiresSave.set(false);
+	}
+	
+	public void saveAsDocument(Document document)
+	{
+		FileChooser saveAsDialog = new FileChooser();
+		File saveLocation = saveAsDialog.showSaveDialog(mainStage);
+		if (saveLocation != null)
+		{
+			document.fullPath.set(saveLocation.getPath());
+			document.filename.set(saveLocation.getName());
+			saveDocument(document);
+		};
+	}
+	
+	// Returns whether or not to close the document.
+	// If the user selects cancel this will return false, and any relevant event will be consumed.
+	public boolean showRequestSaveDialog(Document document, Event consumableEvent)
+	{
+		Alert alert = new Alert(AlertType.CONFIRMATION);
+		alert.setTitle("Save Changes");
+		alert.setHeaderText(null);
+		alert.setContentText(document.filename.get() + " has been modified. Save changes?");
+		ButtonType yesButton = new ButtonType("Yes");
+		ButtonType noButton = new ButtonType("No");
+		ButtonType cancelButton = new ButtonType("Cancel", ButtonData.CANCEL_CLOSE);
+		alert.getButtonTypes().setAll(yesButton, noButton, cancelButton);
+		
+		Optional<ButtonType> result = alert.showAndWait();
+		if (result.get() == cancelButton)
+		{
+			if (consumableEvent != null)
+			{
+				consumableEvent.consume();
+			}
+			return false;
+		}
+		
+		if (result.get() == yesButton)
+		{
+			saveDocument(document);
+		}
+		
+		return true;
 	}
 }

@@ -4,6 +4,7 @@ import org.omg.CosNaming.NamingContextExtPackage.AddressHelper;
 import Cameo.Model.Document;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
@@ -12,6 +13,7 @@ import javafx.scene.control.ScrollPane.ScrollBarPolicy;
 import javafx.scene.layout.*;
 import javafx.scene.text.TextAlignment;
 import javafx.scene.text.*;
+import javafx.event.*;
 
 // | container : border setup placing lineNumbers on the left and textArea in the center. 
 //	 | scrollPane : Scrolls the innerContainer
@@ -24,7 +26,7 @@ public class DocumentTab extends Tab
 	TextArea textArea = new TextArea();
 	VBox lineNumbers = new VBox();
 	
-	public DocumentTab(Document document)
+	public DocumentTab(DocumentArea parent, Document document)
 	{
 		this.getStyleClass().add("document-text");
 
@@ -101,6 +103,21 @@ public class DocumentTab extends Tab
 				scrollPane.setVmax(1 + ((lineNumbersTopPadding * 2) / lineNumbers.getHeight()));
 				
 				scrollPane.setVvalue((double)newValue / (textContent.getBoundsInLocal().getHeight() - textArea.getHeight()));
+			}
+		});
+		
+		this.setOnCloseRequest(new EventHandler<Event>()
+		{
+			@Override
+			public void handle(Event e)
+			{
+				if (document.requiresSave.get())
+				{
+					if (parent.parent.showRequestSaveDialog(document, null) == false)
+					{
+						e.consume();
+					}
+				}
 			}
 		});
 		
