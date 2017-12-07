@@ -102,6 +102,12 @@ public class CameoMenuBar extends MenuBar
 			@Override
 			public void handle(ActionEvent e)
 			{
+				for (int index = parent.model.documents.size() - 1; index >= 0; index--)
+				{
+					parent.model.selectedDocumentIndex.set(index);
+					parent.closeCurrentTab();
+				}
+				
 				Platform.exit();
 				System.exit(0);
 			}
