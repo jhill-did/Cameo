@@ -1,15 +1,11 @@
 package Cameo;
 import java.io.File;
 
-import javax.swing.JPopupMenu.Separator;
-import javax.swing.plaf.metal.MetalPopupMenuSeparatorUI;
-
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.*;
 import javafx.scene.control.Alert.AlertType;
-import javafx.scene.*;
 import javafx.stage.*;
 import javafx.scene.input.*;
 

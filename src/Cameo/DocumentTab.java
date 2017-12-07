@@ -1,18 +1,14 @@
 package Cameo;
-import org.omg.CosNaming.NamingContextExtPackage.AddressHelper;
 
 import Cameo.Model.ApplicationModel;
 import Cameo.Model.Document;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.EventHandler;
-import javafx.geometry.Insets;
-import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.control.ScrollPane.ScrollBarPolicy;
 import javafx.scene.layout.*;
-import javafx.scene.text.TextAlignment;
 import javafx.scene.text.*;
 import javafx.event.*;
 import javafx.scene.input.*;

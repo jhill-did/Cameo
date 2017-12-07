@@ -18,12 +18,8 @@ import javafx.scene.layout.*;
 import javafx.scene.control.*;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonBar.ButtonData;
-import javafx.beans.binding.*;
-import javafx.beans.property.*;
 import javafx.event.*;
 import javafx.geometry.Pos;
-import javafx.scene.input.*;
-import javafx.collections.*;
 import javafx.beans.value.*;
 
 public class CameoApp extends Application
